@@ -29,7 +29,14 @@ Claude Code 自定义技能，用于特定工作流。
 
 ### 生产力工具 (productivity/)
 
-- **planning-with-files** - 任务规划和进度跟踪
+（暂无）
+
+### 推荐外部 Skills
+
+- [**planning-with-files**](https://github.com/OthmanAdi/planning-with-files) - 任务规划和进度跟踪
+  ```bash
+  /plugin marketplace add OthmanAdi/planning-with-files
+  ```
 
 ## Plugins
 

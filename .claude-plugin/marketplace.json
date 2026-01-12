@@ -1,0 +1,25 @@
+{
+  "name": "ai-toolkit",
+  "owner": {
+    "name": "soulx",
+    "email": ""
+  },
+  "metadata": {
+    "description": "Personal AI programming toolkit with skills for notes organization and productivity",
+    "version": "1.0.0"
+  },
+  "plugins": [
+    {
+      "name": "notes-skills",
+      "description": "Collection of note organization and processing skills",
+      "source": "./",
+      "strict": false,
+      "skills": [
+        "./skills/notes/section-refactor-with-todo-routing",
+        "./skills/notes/note-outline-checklist",
+        "./skills/notes/learning-notes-organizer",
+        "./skills/notes/image-alt-title-filler"
+      ]
+    }
+  ]
+}
