@@ -20,6 +20,14 @@
         "./skills/notes/learning-notes-organizer",
         "./skills/notes/image-alt-title-filler"
       ]
+    },
+    {
+      "name": "planning-with-files",
+      "description": "Task planning and progress tracking",
+      "source": {
+        "source": "github",
+        "repo": "OthmanAdi/planning-with-files"
+      }
     }
   ]
 }
