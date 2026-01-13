@@ -3,7 +3,11 @@
 > 个人 AI 编程工具集 - Skills、Plugins、MCP Servers 等
 
 个人维护的 AI 编程相关工具集合，包含 Claude Code Skills、插件、MCP 服务器等，用于提升 AI 辅助编程效率。
-
+## Quick Install
+```bash
+/plugin marketplace add z-soulx/ai-toolkit
+/plugin install image-alt-title-filler@z-soulx
+```
 ## 目录结构
 
 ```
@@ -31,12 +35,9 @@ Claude Code 自定义技能，用于特定工作流。
 
 （暂无）
 
-### 推荐外部 Skills
+### 外部 Skills
 
-- [**planning-with-files**](https://github.com/OthmanAdi/planning-with-files) - 任务规划和进度跟踪
-  ```bash
-  /plugin marketplace add OthmanAdi/planning-with-files
-  ```
+- [**(可直接安装skill无需单独再加入市场)planning-with-files**](https://github.com/OthmanAdi/planning-with-files) - 任务规划和进度跟踪
 
 ## Plugins
 
@@ -48,7 +49,7 @@ Model Context Protocol 服务器（待添加）
 
 ## 使用说明
 
-### 安装 Skills
+### 手动安装 Skills
 
 ```bash
 # 复制 skill 到 Claude Code 配置目录
