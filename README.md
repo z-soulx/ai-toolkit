@@ -8,6 +8,26 @@
 /plugin marketplace add z-soulx/ai-toolkit
 /plugin install image-alt-title-filler@z-soulx
 ```
+## 新手知识
+
+**Agent（智能体）**：负责“理解目标 → 拆解计划 → 调用工具 → 读结果 → 再迭代”的执行体（带状态、会规划、会行动）。
+
+- **勘误：** Agent 的“执行体”一定是一个 runtime（*CLI/SDK/程序*），可以是（Python/TS）来写“你自己的 Agent 程序”，也可以用*文件声明Subagent(但依赖主agent CLI本身，CLI就是一个agent执行体agentic runtime)*。
+
+**Tool（工具）**：确定性的能力接口（读写文件、跑命令、查 API、访问数据库……）。
+
+- 内置 tools 和 利用MCP扩展tool(:bulb: *Tool 和 MCP 不是同一层的概念,着重利用*)。
+
+**Command**：Slash command（/xxx）是“你手动触发的快捷指令 / 提示词模板 / 控制面板”
+
+**MCP**：让 agent/LLM 以**标准方式**连接到外部工具与数据源的“通用插口/协议”（客户端 ↔ 服务器）。
+
+**Skill（技能）**：把你团队/你个人的“做事流程与专业知识”封装成可复用模块，让 agent **更会做这类事**。
+
+**Hook（钩子）**：在 agent/工具链生命周期的关键节点插入“必定执行”的规则/脚本，用来做**强约束、审计、自动化**。
+
+**Plugin（插件）**：把 skills / hooks / agents / slash commands / MCP servers 等打包成可分发、可版本化、可团队复用的一套扩展。
+
 ## 目录结构
 
 ```
