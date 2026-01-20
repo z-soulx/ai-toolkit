@@ -57,15 +57,31 @@ Claude Code 自定义技能，用于特定工作流。
 
 ### 外部 Skills
 
-- [**(可直接安装skill无需单独再加入市场)planning-with-files**](https://github.com/OthmanAdi/planning-with-files) - 任务规划和进度跟踪
+> :registered: 本项目已经引入仓库，可直接安装skill无需单独再加入市场
+
+[:registered: planning-with-files](https://github.com/OthmanAdi/planning-with-files) - 任务规划和进度跟踪
+
+- 解决ai易在长上下文中迷失，出现”幻觉“或遗忘。
+
+[:registered: superpowers](https://github.com/obra/superpowers) - 头脑风暴、写计划、执行计划
+
+- An agentic skills framework & software development methodology that works.
 
 ## Plugins
 
 编辑器插件和扩展（待添加）
 
+- [anthropics官方插件列表](https://github.com/anthropics/claude-code/tree/main/plugins)
+
+[ralph-wiggum](https://github.com/anthropics/claude-code/tree/main/plugins/ralph-wiggum) - Ralph 就是一个 Bash 循环,**自我纠正修复**
+
+- ⚠️--max-iterations 设置最大迭代次数，否者遇见死题上演token消失术。
+
 ## MCP Servers
 
 Model Context Protocol 服务器（待添加）
+
+[notebooklm-mcp](https://github.com/PleasePrompto/notebooklm-mcp) - NotebookLM笔记操作，但是不支持上传文件
 
 ## 使用说明
 
