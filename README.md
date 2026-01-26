@@ -13,6 +13,7 @@
 **Agent（智能体）**：负责“理解目标 → 拆解计划 → 调用工具 → 读结果 → 再迭代”的执行体（带状态、会规划、会行动）。
 
 - **勘误：** Agent 的“执行体”一定是一个 runtime（*CLI/SDK/程序*），可以是（Python/TS）来写“你自己的 Agent 程序”，也可以用*文件声明Subagent(但依赖主agent CLI本身，CLI就是一个agent执行体agentic runtime)*。
+- subagent相比skill 一个“分身”，**独立上下文**、独立权限/工具集，专门跑一类任务（比如 code review）。 可以把“噪音”隔离在子上下文里，主对话只拿总结
 
 **Tool（工具）**：确定性的能力接口（读写文件、跑命令、查 API、访问数据库……）。
 
@@ -40,6 +41,10 @@ ai-toolkit/
 └── README.md         # 本文档
 ```
 
+综合参考源
+
+- [综合源-everything-claude-code](https://github.com/affaan-m/everything-claude-code)
+
 ## Skills
 
 Claude Code 自定义技能，用于特定工作流。
@@ -66,6 +71,10 @@ Claude Code 自定义技能，用于特定工作流。
 [:registered: superpowers](https://github.com/obra/superpowers) - 头脑风暴、写计划、执行计划
 
 - An agentic skills framework & software development methodology that works.
+
+## Agents
+
+
 
 ## Plugins
 
