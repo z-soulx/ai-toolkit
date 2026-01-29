@@ -1,0 +1,23 @@
+{
+  "name": "notes-skills",
+  "version": "1.0.0",
+  "description": "Collection of note organization and processing skills: learning notes organizer, image alt/title filler, note outline checklist, and section refactoring tools.",
+  "author": {
+    "name": "soulx",
+    "url": "https://github.com/z-soulx"
+  },
+  "repository": "https://github.com/z-soulx/ai-toolkit",
+  "license": "MIT",
+  "keywords": [
+    "notes",
+    "markdown",
+    "organization",
+    "refactoring",
+    "learning",
+    "knowledge-management",
+    "image-alt",
+    "accessibility",
+    "claude-code",
+    "skills"
+  ]
+}
