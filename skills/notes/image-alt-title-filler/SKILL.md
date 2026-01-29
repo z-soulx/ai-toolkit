@@ -1,7 +1,9 @@
 ---
 name: image-alt-title-filler
 description: 脚本化图片 alt/title 补全工具。脚本负责提取和替换，模型只负责看图生成描述。支持 Markdown 和 HTML 图片，严格不改路径、不丢图。
+user-invocable: true
 metadata:
+  short-description: 图片 alt/title 补全（脚本化；支持 Markdown/HTML；必须先 dry-run）
   version: v5-planning
   safety: 必须先 --dry-run 预览，确认无误后再执行
   dependencies:

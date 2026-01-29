@@ -33,12 +33,19 @@
 
 ```
 ai-toolkit/
-├── skills/           # Claude Code Skills
-│   ├── notes/        # 笔记整理相关
-│   └── productivity/ # 生产力工具
-├── plugins/          # 编辑器插件和扩展
-├── mcp-servers/      # Model Context Protocol 服务器
-└── README.md         # 本文档
+├── .claude-plugin/
+│   └── marketplace.json  # Marketplace 定义
+├── commands/             # Slash 命令（显示在命令列表中）
+│   ├── learning-notes-organizer.md
+│   ├── image-alt-title-filler.md
+│   ├── note-outline-checklist.md
+│   └── section-refactor-with-todo-routing.md
+├── skills/               # Claude Code Skills（详细工作流）
+│   ├── notes/            # 笔记整理相关
+│   └── productivity/     # 生产力工具
+├── plugins/              # 编辑器插件和扩展
+├── mcp-servers/          # Model Context Protocol 服务器
+└── README.md             # 本文档
 ```
 
 综合参考源

@@ -1,6 +1,9 @@
 ---
 name: note-outline-checklist
 description: 基于 Markdown 笔记，仅用全部标题与少量正文线索，生成学习笔记重构清单：新规划目录（基础→进阶）、旧标题→新目录映射、重命名建议；遵循 planning-with-files（task_plan/notes）与 learning-notes-organizer 的重划边界/归类重组思路，不改正文。
+user-invocable: true
+metadata:
+  short-description: 笔记大纲重构清单（只规划不改正文；输出新目录+映射+重命名建议）
 ---
 
 # Outline Checklist Generator

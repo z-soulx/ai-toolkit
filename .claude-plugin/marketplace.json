@@ -12,13 +12,19 @@
     {
       "name": "notes-skills",
       "description": "Collection of note organization and processing skills",
+      "version": "1.0.0",
       "source": "./",
-      "strict": false,
       "skills": [
         "./skills/notes/section-refactor-with-todo-routing",
         "./skills/notes/note-outline-checklist",
         "./skills/notes/learning-notes-organizer",
         "./skills/notes/image-alt-title-filler"
+      ],
+      "commands": [
+        "./commands/section-refactor-with-todo-routing.md",
+        "./commands/note-outline-checklist.md",
+        "./commands/learning-notes-organizer.md",
+        "./commands/image-alt-title-filler.md"
       ]
     },
     {
@@ -29,7 +35,6 @@
         "repo": "OthmanAdi/planning-with-files"
       }
     },
-
     {
       "name": "superpowers",
       "description": "Core skills library for Claude Code: TDD, debugging, collaboration patterns, and proven techniques",
