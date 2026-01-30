@@ -28,7 +28,8 @@ ai-toolkit/
 │   ├── learning-notes-organizer.md
 │   ├── image-alt-title-filler.md
 │   ├── note-outline-checklist.md
-│   └── section-refactor-with-todo-routing.md
+│   ├── section-refactor-with-todo-routing.md
+│   └── markdown-to-pdf.md
 ├── skills/                   # Local skills (detailed workflows)
 │   ├── notes/               # Note organization skills
 │   │   ├── learning-notes-organizer/
@@ -36,6 +37,7 @@ ai-toolkit/
 │   │   ├── note-outline-checklist/
 │   │   └── section-refactor-with-todo-routing/
 │   └── productivity/        # Productivity tools
+│       └── markdown-to-pdf/
 ├── plugins/                 # Editor plugins (future)
 ├── mcp-servers/            # MCP servers (future)
 └── agents/                 # Custom agents (future)
@@ -58,10 +60,13 @@ ai-toolkit/
    - note-outline-checklist
    - section-refactor-with-todo-routing
 
-2. **planning-with-files** (external) - Task planning and progress tracking
+2. **productivity-skills** (local) - Productivity and document processing tools
+   - markdown-to-pdf
+
+3. **planning-with-files** (external) - Task planning and progress tracking
    - From: github.com/OthmanAdi/planning-with-files
 
-3. **superpowers** (external) - Core skills library
+4. **superpowers** (external) - Core skills library
    - From: github.com/obra/superpowers
 
 ### Skill Structure
@@ -162,7 +167,7 @@ metadata:
 - **section-refactor-with-todo-routing** - 指定章节精修
 
 ### productivity/
-(Planned)
+- **markdown-to-pdf** - Markdown 转专业 PDF 白皮书（苹果设计风格）
 
 ## Important Principles
 

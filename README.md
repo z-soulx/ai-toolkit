@@ -65,7 +65,7 @@ Claude Code 自定义技能，用于特定工作流。
 
 ### 生产力工具 (productivity/)
 
-（暂无）
+- **markdown-to-pdf** - Markdown 转专业 PDF 白皮书（苹果设计风格）
 
 ### 外部 Skills
 

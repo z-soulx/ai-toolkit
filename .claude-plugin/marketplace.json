@@ -28,6 +28,18 @@
       ]
     },
     {
+      "name": "productivity-skills",
+      "description": "Collection of productivity and document processing skills",
+      "version": "1.0.0",
+      "source": "./",
+      "skills": [
+        "./skills/productivity/markdown-to-pdf"
+      ],
+      "commands": [
+        "./commands/markdown-to-pdf.md"
+      ]
+    },
+    {
       "name": "planning-with-files",
       "description": "Task planning and progress tracking",
       "source": {
