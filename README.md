@@ -43,6 +43,8 @@ ai-toolkit/
 ├── skills/               # Claude Code Skills（详细工作流）
 │   ├── notes/            # 笔记整理相关
 │   └── productivity/     # 生产力工具
+├── rules/                # 行为规则模板（约束 AI 行为）
+│   └── docs-writing-protocol/  # 文档沉淀写入协议
 ├── plugins/              # 编辑器插件和扩展
 ├── mcp-servers/          # Model Context Protocol 服务器
 └── README.md             # 本文档
@@ -66,6 +68,8 @@ Claude Code 自定义技能，用于特定工作流。
 ### 生产力工具 (productivity/)
 
 - **markdown-to-pdf** - Markdown 转专业 PDF 白皮书（苹果设计风格）
+  - [基于原版改造升级](https://github.com/alchaincyf/huashu-skills/tree/master/markdown-to-pdf)
+
 
 ### 外部 Skills
 
@@ -78,6 +82,36 @@ Claude Code 自定义技能，用于特定工作流。
 [:registered: superpowers](https://github.com/obra/superpowers) - 头脑风暴、写计划、执行计划
 
 - An agentic skills framework & software development methodology that works.
+
+## Rules
+
+行为规则模板，用于约束 AI 在特定场景下的行为。
+
+### PRD 维护 (prd-maintenance/)
+
+- **prd-maintenance** - PRD 渐进式维护协议
+  - 专为多供应商并行开发 + 敏捷迭代场景设计
+  - 三层结构：Facts（冻结事实）+ Snapshot（当前版本）+ Changelog（变更历史）
+  - 供应商隔离，避免上下文爆炸
+  - 支持从单文件到多文件的渐进演进
+  - 触发关键词：`prd:`, `stop prd`, `prd-split-facts:`, `prd-split-full:`
+
+### 文档管理 (docs-writing-protocol/)
+
+- **docs-writing-protocol** - 交互式沉淀写入协议（去躁点版）
+  - 控制 AI 何时写入文档、写入什么内容
+  - 区分"纠错"与"设计变更"，避免文档噪声
+  - 支持 snapshot/patch/facts/changelog 分层管理
+  - 触发关键词：`update:`, `switch:`, `stop writing`, `no-record`
+
+**使用方式**：
+```bash
+# 复制规则到项目的 .claude/ 目录
+cp rules/prd-maintenance/RULE.md \
+   your-project/.claude/prd-maintenance.md
+
+# Claude Code 会自动加载并遵守该规则
+```
 
 ## Agents
 

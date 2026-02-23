@@ -6,6 +6,7 @@ This file provides guidance to Claude Code when working in this repository.
 
 This is a **Claude Code Marketplace** - a comprehensive AI programming toolkit that packages and distributes:
 - **Skills** - Reusable workflows and domain knowledge
+- **Rules** - Behavior constraints and protocols for AI
 - **Plugins** - Editor extensions and integrations
 - **MCP Servers** - Model Context Protocol servers for external data/tools
 - **Agents** - Specialized subagents for specific tasks
@@ -38,17 +39,20 @@ ai-toolkit/
 │   │   └── section-refactor-with-todo-routing/
 │   └── productivity/        # Productivity tools
 │       └── markdown-to-pdf/
+├── rules/                   # Behavior rules and protocols
+│   └── docs-writing-protocol/  # Document writing protocol
 ├── plugins/                 # Editor plugins (future)
 ├── mcp-servers/            # MCP servers (future)
 └── agents/                 # Custom agents (future)
 ```
 
-### Marketplace vs Plugin vs Skill vs Command
+### Marketplace vs Plugin vs Skill vs Command vs Rule
 
 - **Marketplace** (`.claude-plugin/marketplace.json`): A collection of plugins that can be distributed together
 - **Plugin**: A named group of skills/hooks/agents (e.g., "notes-skills")
 - **Skill**: Individual executable workflow with detailed instructions (e.g., "learning-notes-organizer")
 - **Command**: Slash command shortcut that invokes a skill (e.g., `/learning-notes-organizer`)
+- **Rule**: Behavior constraint or protocol that AI follows automatically (e.g., "docs-writing-protocol")
 
 **IMPORTANT**: Commands are what make skills appear in the command list! The `commands/` directory is the key to visibility.
 
@@ -106,6 +110,31 @@ Invoke the plugin-name:skill-name skill and follow it exactly as presented to yo
 Additional instructions or context for the command.
 ```
 
+### Rule Structure
+
+Each rule directory must contain:
+- `RULE.md` (required) - Complete protocol/constraint definition
+- `README.md` (required) - User documentation explaining:
+  - What problem it solves
+  - How to enable it (project-level or global)
+  - Trigger keywords (if applicable)
+  - Usage examples
+
+**Usage Pattern**:
+```bash
+# Project-level (recommended)
+cp rules/docs-writing-protocol/RULE.md \
+   your-project/.claude/docs-writing-protocol.md
+
+# Global (all projects)
+cp rules/docs-writing-protocol/RULE.md \
+   ~/.claude/rules/docs-writing-protocol.md
+```
+
+**Key Difference from Skills**:
+- Skills are invoked explicitly (via `/command`)
+- Rules are loaded automatically and constrain AI behavior continuously
+
 ## Common Operations
 
 ### For Users (Installing This Marketplace)
@@ -158,6 +187,32 @@ metadata:
 ---
 ```
 
+#### Adding a New Rule
+
+1. Create rule directory: `rules/rule-name/`
+2. Create `RULE.md` with complete protocol definition
+3. Create `README.md` with:
+   - Problem statement
+   - Usage instructions (how to enable)
+   - Trigger keywords (if applicable)
+   - Examples
+4. Test locally by copying to `.claude/` directory
+5. Commit and push
+
+#### Testing Rules Locally
+
+```bash
+# Test in a project
+cp rules/docs-writing-protocol/RULE.md \
+   test-project/.claude/docs-writing-protocol.md
+
+# Test globally
+cp rules/docs-writing-protocol/RULE.md \
+   ~/.claude/rules/docs-writing-protocol.md
+
+# Reload Claude Code to see changes
+```
+
 ## Skill Categories
 
 ### notes/
@@ -168,6 +223,24 @@ metadata:
 
 ### productivity/
 - **markdown-to-pdf** - Markdown 转专业 PDF 白皮书（苹果设计风格）
+
+## Rule Categories
+
+### prd-maintenance/
+- **prd-maintenance** - PRD 渐进式维护协议
+  - 专为多供应商并行开发 + 敏捷迭代场景设计
+  - 三层结构：Facts（冻结事实）+ Snapshot（当前版本）+ Changelog（变更历史）
+  - 供应商隔离，避免上下文爆炸
+  - 支持从单文件到多文件的渐进演进
+  - 触发关键词：`prd:`, `stop prd`, `prd-split-facts:`, `prd-split-full:`
+  - 适用场景：OTA 酒店直连业务（如家增量、华住全量等）
+
+### docs-writing-protocol/
+- **docs-writing-protocol** - 交互式沉淀写入协议（去躁点版）
+  - 控制 AI 何时写入文档、写入什么内容
+  - 区分"纠错"与"设计变更"，避免文档噪声
+  - 支持 snapshot/patch/facts/changelog 分层管理
+  - 触发关键词：`update:`, `switch:`, `stop writing`, `no-record`
 
 ## Important Principles
 
