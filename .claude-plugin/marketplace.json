@@ -40,6 +40,16 @@
       ]
     },
     {
+      "name": "doc-processing-skills",
+      "description": "Document writing and PRD maintenance skills",
+      "version": "1.0.0",
+      "source": "./",
+      "skills": [
+        "./skills/doc-processing/docs-writing-protocol",
+        "./skills/doc-processing/prd-maintenance"
+      ]
+    },
+    {
       "name": "planning-with-files",
       "description": "Task planning and progress tracking",
       "source": {

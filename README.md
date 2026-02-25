@@ -42,7 +42,8 @@ ai-toolkit/
 │   └── section-refactor-with-todo-routing.md
 ├── skills/               # Claude Code Skills（详细工作流）
 │   ├── notes/            # 笔记整理相关
-│   └── productivity/     # 生产力工具
+│   ├── productivity/     # 生产力工具
+│   └── doc-processing/   # 文档处理（docs-writing-protocol / prd-maintenance）
 ├── rules/                # 行为规则模板（约束 AI 行为）
 │   ├── docs-writing-protocol/  # 文档沉淀写入协议
 │   ├── prd-maintenance/        # PRD 渐进式维护协议
@@ -72,6 +73,18 @@ Claude Code 自定义技能，用于特定工作流。
 - **markdown-to-pdf** - Markdown 转专业 PDF 白皮书（苹果设计风格）
   - [基于原版改造升级](https://github.com/alchaincyf/huashu-skills/tree/master/markdown-to-pdf)
 
+
+### 文档处理 (doc-processing/)
+
+- **docs-writing-protocol** - 文档写入协议（去躁点版）
+  - 按需写入，没点名文件就不写入
+  - 纠错不记账，只记契约/流程/规则/语义变更
+  - 对应 Rule：`rules/docs-writing-protocol/`（高频场景可改用 Rule 全量加载）
+
+- **prd-maintenance** - PRD 渐进式维护协议
+  - 三层结构：Facts（冻结）+ Snapshot（当前）+ Changelog（历史）
+  - 供应商隔离，渐进演进（单文件 → 拆分）
+  - 对应 Rule：`rules/prd-maintenance/`（高频场景可改用 Rule 全量加载）
 
 ### 外部 Skills
 
