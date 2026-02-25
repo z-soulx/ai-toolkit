@@ -44,7 +44,9 @@ ai-toolkit/
 │   ├── notes/            # 笔记整理相关
 │   └── productivity/     # 生产力工具
 ├── rules/                # 行为规则模板（约束 AI 行为）
-│   └── docs-writing-protocol/  # 文档沉淀写入协议
+│   ├── docs-writing-protocol/  # 文档沉淀写入协议
+│   ├── prd-maintenance/        # PRD 渐进式维护协议
+│   └── feedback-after-completion/  # 任务完成后强制交互反馈
 ├── plugins/              # 编辑器插件和扩展
 ├── mcp-servers/          # Model Context Protocol 服务器
 └── README.md             # 本文档
@@ -104,6 +106,14 @@ Claude Code 自定义技能，用于特定工作流。
   - 支持 snapshot/patch/facts/changelog 分层管理
   - 触发关键词：`update:`, `switch:`, `stop writing`, `no-record`
 
+### 完成反馈 (feedback-after-completion/)
+
+- **feedback-after-completion** - 任务完成后强制交互反馈协议
+  - 每次完成阶段性任务后，必须调用 MCP `mcp-feedback-enhanced` 询问用户反馈
+  - 收到非空反馈后，再次调用并根据反馈调整行为
+  - 仅当用户明确表示「结束」时才停止反馈循环
+  - `alwaysApply: true`，始终生效，无需显式触发
+
 **使用方式**：
 ```bash
 # 复制规则到项目的 .claude/ 目录
@@ -156,4 +166,4 @@ MIT License - 详见 [LICENSE](LICENSE) 文件
 ---
 
 **维护者**: [@soulx](https://github.com/soulx)
-**最后更新**: 2026-01-12
+**最后更新**: 2026-02-25

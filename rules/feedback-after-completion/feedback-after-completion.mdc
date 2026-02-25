@@ -1,0 +1,15 @@
+---
+description: 任务完成后强制交互反馈协议。每次完成阶段性任务后，必须调用 MCP mcp-feedback-enhanced 向用户询问反馈，直到用户明确表示结束。
+globs:
+alwaysApply: true
+---
+
+# 激活条件
+
+本规则 alwaysApply: true，始终生效，无需显式触发。
+
+**结束指令**（收到以下指令时停止反馈循环）：
+- 用户明确说「结束」
+- 用户明确说「不再需要交互」
+
+> 协议详细规则见 [RULE.md](./RULE.md)

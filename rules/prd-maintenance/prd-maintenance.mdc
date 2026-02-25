@@ -1,0 +1,26 @@
+---
+description: PRD 渐进式维护协议。当用户表达"需要 PRD 沉淀"、"维护需求文档"、"prd: <path>" 等意图时，自动激活，与 docs-writing-protocol 叠加生效，读取 PRD 专属规则。
+globs:
+alwaysApply: false
+---
+
+# 激活条件
+
+当用户输入匹配以下任意模式时，读取 `RULE.md` 全文，与 docs-writing-protocol 叠加生效（PRD 规则优先）：
+
+**显式指令**
+- `prd: <path>`
+- `stop prd`
+- `prd-split-facts: <path>`
+- `prd-split-full: <path>`
+- `prd-merge: <path>`
+
+**语义触发（自然语言）**
+- 含"PRD 沉淀"/"沉淀到 PRD"/"沉淀 PRD"
+- 含"prd 维护"/"维护 PRD"
+
+触发后：若用户未指定 PRD 路径，**先询问目标路径**，确认后进入持续维护模式。
+
+> 本协议与 docs-writing-protocol 叠加生效：通用写入门槛和去躁点判定由 docs-writing-protocol 负责，PRD 三层结构和文件管理由本协议负责。
+>
+> 协议详细规则见 [RULE.md](./RULE.md)
