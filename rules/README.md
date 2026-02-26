@@ -1,62 +1,97 @@
 # Rules（行为规则）
 
-> 约束 AI 行为的协议模板库，放入 `.claude/` 后每次对话全量加载
+> 放进 system prompt 的持续约束——不需要触发，会话开始即生效
 
-## 什么是 Rule？
+## Rule 是什么
 
-**Claude Code 的 Rule** = 放在 `.claude/` 目录下的 `.md` 文件，每次对话开始时**无条件全文加载**进 system prompt。没有触发条件、没有 globs、没有开关——唯一的粒度控制是**文件存不存在**。
+**Rule = 静态前缀（system prompt）的一部分**，会话开始时全文加载，每轮对话都在场。
 
-> **关于 `.mdc` 文件**：本仓库的 `.mdc` 是给 Cursor 用的元数据（支持 `alwaysApply` / `globs` 等 frontmatter 控制）。Claude Code 不读 `.mdc`，两者互不干扰。
+```
+静态前缀（system prompt）          动态上下文（conversation context）
+  ├── CLAUDE.md / AGENTS.md            ├── 对话历史、工具调用结果
+  ├── Rules                            ├── Skill body（触发后注入）
+  ├── 会话开始一次性加载               ├── Compaction 压缩/摘要这部分
+  └── Compaction 不压缩这部分          └── 长对话可能丢失
+```
 
-## Rule 与 Skill 的边界正在融合——但没有消失
+**Skill** = 触发后才注入动态上下文的工作流模块。Rule 和 Skill 的核心区别是**在哪里**，不是触发方式。
 
-### 行业趋势
+`CLAUDE.md` / `AGENTS.md` = 同一概念在不同工具的命名，本质都是 system prompt。
 
-各家 AI 工具正在走向同一个方向：
+**Claude Code 加载层级**（全部拼接进同一 system prompt，全局 → 局部）：
 
-- **指令/规则文件**（`AGENTS.md`、`CLAUDE.md`、`.cursor/rules`）成为"基本盘"——每次对话的上下文基础
-- **技能/插件**（Skills、Agent Skills）成为"可复用能力层"——按需注入的工作流模块
-- **Agent Skills 开放标准**正在推动跨工具兼容（Claude Code、Cursor 均已支持）
+1. `~/.claude/CLAUDE.md` — 全局，所有项目
+2. `<project-root>/CLAUDE.md` — 项目根目录
+3. `<project-root>/.claude/CLAUDE.md` — 项目 `.claude/` 子目录
+4. `<subdir>/CLAUDE.md` — Claude 在该子目录操作时额外加载
+5. `@import` 显式引入的文件
 
-### Cursor：Skills 以"规则形态"注入
+**CLAUDE.md vs AGENTS.md**：Claude Code 两个都读，有则全部拼接。区别在受众：
 
-Cursor 官方文档明确：Skills 进入模型上下文时，以"由 Agent 决定是否应用的规则"形式注入（类似 `Apply Intelligently`），且**不能**配置成 `alwaysApply` 或 `manual`。
+| 文件 | 适合放什么 |
+|---|---|
+| `CLAUDE.md` | Claude Code 专属配置（工具调用偏好、项目约定） |
+| `AGENTS.md` | 跨工具通用规范（OpenAI Codex、Gemini CLI 等也读这个） |
 
-所以在 Cursor 里，Skill 和 Rule 的**使用接口统一了**（都是上下文注入），但**语义边界仍在**：
+跨工具共享的规范放 `AGENTS.md`，Claude Code 专属的放 `CLAUDE.md`；两者共存时都生效，不冲突。
+
+> ⚠️ **误解："Rule 和 Skill 本质相同"** → 不同。Rule 在静态前缀，Skill body 在动态上下文，两者的可靠性完全不同。
+
+## 规则如何活在模型里
+
+LLM API 无状态：每次 API 调用都发送完整上下文（system prompt + 历史 + 新消息）。
+
+**Rule 在静态前缀 → 每轮都在**，但 Claude  Code 基于 **prompt caching** 构建：静态前缀稳定，后续轮次缓存命中，成本约为标准价格的 **~10%**（$0.30/MTok vs $3/MTok for Sonnet）。
+
+> ⚠️ **误解："每轮都全量烧 token"** → 只有新会话第一轮全量计费，后续命中缓存大幅降低。新会话 = 重新加载文件、重新计费；同一会话 = 缓存命中。
+
+**Compaction**（上下文约 95% 满时触发）：
+- 压缩：动态上下文（对话历史、工具调用结果）
+- **不压缩**：静态前缀（CLAUDE.md / Rules）
+
+> ⚠️ **误解："长对话规则会被挤掉"** → Rule 不会。被压缩的是对话历史，不是规则前缀。Skill body 被触发后进入动态上下文，才有可能被 Compaction 摘要/丢弃。
+
+**静态前缀的生命周期**：文件在**会话启动时**读取并"冻结"。
+
+- 会话中新增或修改 CLAUDE.md / Rule 文件 → 当前会话**感知不到**，读到的还是启动时的内容
+- 重新加载的方式：`/clear`（清空对话历史，重新读取所有规则文件）或开新会话
+- `/clear` 后静态前缀内容变了 → prompt cache 失效，下一轮重新全量计费
+
+```
+改文件 → /clear → 验证效果 → 再改 → /clear → ...
+```
+
+> ⚠️ **调试 Rule 常见坑**：改完文件直接在当前对话测试 → 看到的是旧规则。必须先 `/clear`。
+
+## Rule vs Skill
 
 | | Rule | Skill |
 |---|---|---|
-| 本质 | 做事原则 / 规范 / 约束 | 可复用能力包（含脚本/资源/命令） |
-| 典型形式 | `.mdc` / `CLAUDE.md` / `AGENTS.md` | `SKILL.md` + 可选脚本/参考资料 |
-| 调用方式 | 自动加载（alwaysApply / globs / description） | `/skill-name` 手动调用 或 description 匹配自动触发 |
-| 能否 alwaysApply | ✅ | ❌（Cursor 中 Skill 不支持） |
+| 位置 | 静态前缀（system prompt） | 动态上下文（触发时注入） |
+| 可靠性 | 强制，Compaction 不丢 | 长对话可能被摘要/丢弃 |
+| Token 成本 | 首轮全量，后续缓存 ~10% | 按需加载 |
+| 适合场景 | 持续约束、高频使用 | 一次性任务、低频工作流 |
 
-### Claude Code vs Cursor：Rule 机制对比
+**选择口诀**：持续约束 / 高频 → Rule；一次性工作流 / 长文档 → Skill（按需，不占 system prompt）。
 
-| | Cursor `.mdc` | Claude Code Rule `.md` |
+Rule 超过 200 行就该考虑改成 Skill——不是因为"每轮都烧"，而是因为**规则太长模型遵循质量会下降**。
+
+## Cursor 参考：四种规则模式
+
+Cursor 中 Rule/Skill 边界更模糊（<u>*Skill 也以规则形态注入*</u>），但它的四种模式展示了从"强制全量"到"完全懒加载"的完整光谱：
+
+| 类型 | Frontmatter | 注入时机 |
 |---|---|---|
-| `description` 语义自动触发 | ✅ AI 根据上下文自主判断 | ❌ Rule 无此机制，全量加载 |
-| 按文件路径触发 | ✅ `globs: **/*.ts` | ❌ 不支持 |
-| 强制全量加载 | ✅ `alwaysApply: true` | ✅ 放进 `.claude/` 即全量加载 |
-| Token 效率 | ✅ 按需加载 | ❌ 每次对话都烧 |
-| Skill 自动触发 | ✅ description 匹配 | ⚠️ 理论支持，实践可靠性差 |
+| Always | `alwaysApply: true` | **每次 API 请求**（每轮），无条件 |
+| Auto Attached | `globs: ["**/*.ts"]` | 匹配文件在上下文中时 |
+| Agent Requested | 只有 `description` | AI 根据描述自主决定是否拉取 |
+| Manual | 无 frontmatter | 仅用户显式引用时 |
 
-**本仓库的兼容策略**：`RULE.md` 是内容层（两个工具通用），`.mdc` 是 Cursor 的激活策略层，Claude Code 用户只需复制 `RULE.md` 到 `.claude/`。
+> ⚠️ **误解："alwaysApply: true = 新会话加载一次"** → 是每次 API 请求（每轮对话）注入，不只是会话开始。
 
-> **双版本说明**：`docs-writing-protocol` 和 `prd-maintenance` 同时提供 Rule 版（`rules/`）和 Skill 版（`skills/doc-processing/`）。高频 → Rule；低频 → Skill。
+**Agent Requested** 是 progressive disclosure 的体现：`description`（元数据）先进前缀保持稳定，全文 body 按需拉取——body 可能被压缩，元数据相对稳定。
 
-## Rule vs Skill 怎么选？（Claude Code 标准）
-
-| | Rule | Skill | 手动 @ |
-|---|---|---|---|
-| 触发方式 | 自动（全量加载） | `/command` 或 description 匹配 | 手动 @ 文件 |
-| Token 成本 | 每次对话都烧 | 按需加载 | 完全按需 |
-| 可靠性 | 强制，不会失效 | 长对话可能遗忘 | 需定期重新 @ |
-| 适合场景 | 持续约束、高频使用 | 一次性任务、低频工作流 | 灵活控制 |
-
-**决策口诀**：规则短（< 100 行）且高频 → Rule；规则长或低频 → Skill 或手动 @。
-
-Rule 超过 200 行就该考虑改成 Skill，每次对话都在烧 token。
+**Claude  Code 中只有一种模式**：文件存在即全文加载进静态前缀，没有 globs / 懒加载 / 按需拉取。Cursor 的四种模式是对比参考，不是 Claude  Code 的功能。
 
 ## 如何使用
 
@@ -64,7 +99,7 @@ Rule 超过 200 行就该考虑改成 Skill，每次对话都在烧 token。
 # 项目级启用（推荐）
 cp rules/<rule-name>/RULE.md your-project/.claude/<rule-name>.md
 
-# 全局启用
+# 全局启用（所有项目生效）
 cp rules/<rule-name>/RULE.md ~/.claude/rules/<rule-name>.md
 
 # 临时禁用
@@ -99,7 +134,6 @@ mv .claude/<rule-name>.md .claude/<rule-name>.md.disabled
 
 任务完成后强制调用 MCP `mcp-feedback-enhanced` 询问用户反馈。
 
-- `alwaysApply: true`（Cursor）/ Claude Code 中直接全量加载
 - 收到非空反馈继续循环，用户说「结束」才停止
 
 [查看详情](./feedback-after-completion/README.md)
@@ -108,13 +142,9 @@ mv .claude/<rule-name>.md .claude/<rule-name>.md.disabled
 
 ```
 rules/rule-name/
-├── RULE.md                  # 协议正文（精简，< 100 行）
-├── README.md                # 用户文档（问题/用法/触发词）
-└── rule-name.mdc            # Cursor 元数据（可选）
+├── RULE.md          # 协议正文（精简，< 100 行）——加载进 system prompt
+├── README.md        # 用户文档（问题/用法/触发词）——不加载，不烧 token
+└── rule-name.mdc    # Cursor 元数据（可选）
 ```
 
-RULE.md 只放核心逻辑，详细说明、示例放 README.md（不会被加载，不烧 token）。
-
-## License
-
-MIT
+`RULE.md` 只放核心逻辑，详细说明和示例放 `README.md`。

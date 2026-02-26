@@ -27,6 +27,8 @@
 
 **Hook（钩子）**：在 agent/工具链生命周期的关键节点插入“必定执行”的规则/脚本，用来做**强约束、审计、自动化**。
 
+**Rule（规则）**：放进 system prompt 的持续约束，会话启动即生效，不需要触发——与 Skill（按需注入）的核心区别是"在静态前缀里还是动态上下文里"。[含 AGENTS.md / CLAUDE.md / prompt 加载机制详解](./rules/README.md)
+
 **Plugin（插件）**：把 skills / hooks / agents / slash commands / MCP servers 等打包成可分发、可版本化、可团队复用的一套扩展。
 
 ## 目录结构
@@ -100,40 +102,14 @@ Claude Code 自定义技能，用于特定工作流。
 
 ## Rules
 
-行为规则模板，用于约束 AI 在特定场景下的行为。
+行为规则模板——放进 system prompt，会话启动自动生效。[Rule / AGENTS.md / CLAUDE.md / prompt 加载机制](./rules/README.md)
 
-### PRD 维护 (prd-maintenance/)
+- **prd-maintenance** - PRD 渐进式维护协议（多供应商并行 + 敏捷迭代）
+- **docs-writing-protocol** - 文档写入协议，控制何时写入、写什么，避免文档噪声
+- **feedback-after-completion** - 任务完成后强制调用 MCP 询问用户反馈
 
-- **prd-maintenance** - PRD 渐进式维护协议
-  - 专为多供应商并行开发 + 敏捷迭代场景设计
-  - 三层结构：Facts（冻结事实）+ Snapshot（当前版本）+ Changelog（变更历史）
-  - 供应商隔离，避免上下文爆炸
-  - 支持从单文件到多文件的渐进演进
-  - 触发关键词：`prd:`, `stop prd`, `prd-split-facts:`, `prd-split-full:`
-
-### 文档管理 (docs-writing-protocol/)
-
-- **docs-writing-protocol** - 交互式沉淀写入协议（去躁点版）
-  - 控制 AI 何时写入文档、写入什么内容
-  - 区分"纠错"与"设计变更"，避免文档噪声
-  - 支持 snapshot/patch/facts/changelog 分层管理
-  - 触发关键词：`update:`, `switch:`, `stop writing`, `no-record`
-
-### 完成反馈 (feedback-after-completion/)
-
-- **feedback-after-completion** - 任务完成后强制交互反馈协议
-  - 每次完成阶段性任务后，必须调用 MCP `mcp-feedback-enhanced` 询问用户反馈
-  - 收到非空反馈后，再次调用并根据反馈调整行为
-  - 仅当用户明确表示「结束」时才停止反馈循环
-  - `alwaysApply: true`，始终生效，无需显式触发
-
-**使用方式**：
 ```bash
-# 复制规则到项目的 .claude/ 目录
-cp rules/prd-maintenance/RULE.md \
-   your-project/.claude/prd-maintenance.md
-
-# Claude Code 会自动加载并遵守该规则
+cp rules/<rule-name>/RULE.md your-project/.claude/<rule-name>.md
 ```
 
 ## Agents
