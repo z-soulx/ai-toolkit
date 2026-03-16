@@ -27,7 +27,7 @@
 
 **Hook（钩子）**：在 agent/工具链生命周期的关键节点插入“必定执行”的规则/脚本，用来做**强约束、审计、自动化**。
 
-**Rule（规则）**：放进 system prompt 的持续约束，会话启动即生效，不需要触发——与 Skill（按需注入）的核心区别是"在静态前缀里还是动态上下文里"。[含 AGENTS.md / CLAUDE.md / prompt 加载机制详解](./rules/README.md)
+**Rule（规则）**：放进 system prompt 的持续约束，会话启动即生效，不需要触发——与 Skill（按需注入）的核心区别是"在静态前缀里还是动态上下文里"。[含 AGENTS.md / CLAUDE.md / prompt 加载机制详解](./rules/README.md) ｜ [Context 管理与压缩机制指南](./docs/context-management.md)
 
 **Plugin（插件）**：把 skills / hooks / agents / slash commands / MCP servers 等打包成可分发、可版本化、可团队复用的一套扩展。
 
@@ -50,6 +50,8 @@ ai-toolkit/
 │   ├── docs-writing-protocol/  # 文档沉淀写入协议
 │   ├── prd-maintenance/        # PRD 渐进式维护协议
 │   └── feedback-after-completion/  # 任务完成后强制交互反馈
+├── docs/                 # 参考文档
+│   └── context-management.md  # Context 管理与压缩机制指南
 ├── plugins/              # 编辑器插件和扩展
 ├── mcp-servers/          # Model Context Protocol 服务器
 └── README.md             # 本文档
@@ -155,4 +157,4 @@ MIT License - 详见 [LICENSE](LICENSE) 文件
 ---
 
 **维护者**: [@soulx](https://github.com/soulx)
-**最后更新**: 2026-02-25
+**最后更新**: 2026-03-16
