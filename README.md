@@ -102,6 +102,10 @@ Claude Code 自定义技能，用于特定工作流。
 
 - An agentic skills framework & software development methodology that works.
 
+[codebase-to-course](https://github.com/zarazhangrui/codebase-to-course) - 将项目变成可学习课程
+
+[andrej-karpathy-skills](https://github.com/forrestchang/andrej-karpathy-skills) - 减少对 LLM 编码陷阱
+
 ## Rules
 
 行为规则模板——放进 system prompt，会话启动自动生效。[Rule / AGENTS.md / CLAUDE.md / prompt 加载机制](./rules/README.md)
@@ -133,6 +137,8 @@ cp rules/<rule-name>/RULE.md your-project/.claude/<rule-name>.md
 Model Context Protocol 服务器（待添加）
 
 [notebooklm-mcp](https://github.com/PleasePrompto/notebooklm-mcp) - NotebookLM笔记操作，但是不支持上传文件
+
+[sequential-thinking](https://github.com/modelcontextprotocol/servers/tree/main/src/sequentialthinking) - 通过思维序列动态地、反思性地解决问题。
 
 ## 使用说明
 
